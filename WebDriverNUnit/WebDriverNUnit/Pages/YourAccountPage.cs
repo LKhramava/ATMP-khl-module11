@@ -55,10 +55,15 @@ namespace WebDriverNUnit.Pages
 		private readonly BaseElement firstDraftItemBE = new BaseElement(By.XPath("(" + jsLetterListItemDraftString + ")[1]"));
 		private readonly BaseElement firstDraftItemBackgroundBE = new BaseElement(By.XPath("(" + jsLetterListItemDraftString + ")[1]//div[contains(@class, 'llc__background')]"));
 
-		public bool SaveDraftEmail(Letter letter)
+		private static string loginString = "//span[contains(@class, 'ph-project__user-name') and text()='{0}']";
+
+		public void SaveDraftEmail(Letter letter)
 		{
 			SaveDraftEmailInternal(letter);
+		}
 
+		public bool VerifySavedDraftEmail(Letter letter)
+		{
 			//	Verify, that the mail presents in ‘Drafts’ folder
 			//	Verify the draft content (addressee, subject and body – should be the same as in 3).
 
@@ -206,6 +211,12 @@ namespace WebDriverNUnit.Pages
 				}
 			}
 			return null;
+		}
+
+		public bool IsLoginDisplayed(string login)
+		{
+			var loginStringBE = new BaseElement(By.XPath(string.Format(loginString, login)));
+			return loginStringBE.IsDisplayed();
 		}
 	}
 }

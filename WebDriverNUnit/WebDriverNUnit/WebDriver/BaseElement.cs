@@ -49,6 +49,12 @@ namespace WebDriverNUnit.WebDriver
 			new WebDriverWait(Browser.GetDriver(), TimeSpan.FromSeconds(Browser.TimeoutForElement)).Until(ExpectedConditions.ElementIsVisible(this.Locator));
 		}
 
+		public bool IsDisplayed()
+		{
+			var wait = new WebDriverWait(Browser.GetDriver(), TimeSpan.FromSeconds(Browser.TimeoutForElement));
+			return wait.Until(d => FindElement(Locator).Displayed);
+		}
+
 		public void UrlContainsFraction(string fraction)
 		{
 			new WebDriverWait(Browser.GetDriver(), TimeSpan.FromSeconds(Browser.TimeoutForElement)).Until(ExpectedConditions.UrlContains(fraction));
