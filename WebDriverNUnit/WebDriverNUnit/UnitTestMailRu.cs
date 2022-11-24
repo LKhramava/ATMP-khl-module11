@@ -80,7 +80,8 @@ namespace WebDriverNUnit
 			letterSubject = letterSubject + DateTime.Now.TimeOfDay.Ticks.ToString();
 
 			var letter = new Letter() { Email = letterEmail, Subject = letterSubject, Body = letterBody };
-			var letterInDraft = accountPage.SaveDraftEmail(letter);
+			accountPage.SaveDraftEmail(letter);
+			var letterInDraft = accountPage.VerifySavedDraftEmail(letter);
 			Assert.NotNull(letterInDraft);
 		}
 
@@ -93,7 +94,8 @@ namespace WebDriverNUnit
 
 			var accountPage = homePage.GoToYourAccountPage(testData.User);
 
-			var letterInDraft = accountPage.SaveDraftEmail(testData.Letter);
+			accountPage.SaveDraftEmail(testData.Letter);
+			var letterInDraft = accountPage.VerifySavedDraftEmail(testData.Letter);
 			Assert.NotNull(letterInDraft);
 		}
 
@@ -110,7 +112,11 @@ namespace WebDriverNUnit
 
 			var letter = new Letter() { Email = letterEmail, Subject = letterSubject, Body = letterBody };
 			accountPage.SaveDraftEmail(letter);
-			var sendDraftEmailResult = accountPage.SendDraftEmail(letter);
+
+			var sendDraftEmailResult = false;
+
+			if (!accountPage.VerifySavedDraftEmail(letter))
+				sendDraftEmailResult = accountPage.SendDraftEmail(letter);
 
 			accountPage.Logout();
 
